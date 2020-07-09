@@ -9,9 +9,7 @@ const myState = {
   isLogin: false,
   user: {
     name: ""
-  },
-  teacheres: [],
-  directions: []
+  }
 };
 const myMutations = {
   [types.UPDATEUSER](state, data) {
@@ -23,15 +21,7 @@ const myMutations = {
   [types.LOGIN](state, data) {
     state.isLogin = data;
   },
-  teacheres(state, data) {
-    state.teacheres = data;
-  },
-  directions(state, data) {
-    state.directions = data;
-  },
-  name(state, data) {
-    state.user.name = data;
-  }
+ 
 };
 const myActions = {
   [types.UPDATEUSER]({ commit }, data) {
@@ -44,7 +34,6 @@ const myActions = {
     if (resp != null) {
       sessionStorage.setItem("authorization", resp.headers["authorization"]);
       sessionStorage.setItem("role", resp.data.role);
-      sessionStorage.setItem("name", resp.data.name);
       updateRoutes();
       // console.log(resp.data.name);
       commit(types.LOGIN, true);
