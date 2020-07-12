@@ -80,13 +80,9 @@ export default {
       this.$refs.loginFormRef.resetFields();
     },
     login() {
-      this.$refs.loginFormRef.validate(valid => {
-        if (!valid) return;
-
-        this.$store.dispatch(LOGIN, {
-          username: this.user.username,
-          password: this.user.password
-        });
+      this.$store.dispatch(LOGIN, {
+        username: this.user.username,
+        password: this.user.password
       });
       setTimeout(() => {
         if (this.isLogin == true) {

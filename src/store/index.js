@@ -7,9 +7,7 @@ Vue.use(Vuex);
 const myState = {
   exception: { message: null },
   isLogin: false,
-  user: {
-    name: ""
-  }
+  user: {}
 };
 const myMutations = {
   [types.UPDATEUSER](state, data) {
@@ -34,9 +32,7 @@ const myActions = {
       sessionStorage.setItem("authorization", resp.headers["authorization"]);
       sessionStorage.setItem("role", resp.data.role);
       updateRoutes();
-      // console.log(resp.data.name);
       commit(types.LOGIN, true);
-      commit("name", resp.data.name);
     }
   }
 };

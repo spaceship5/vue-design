@@ -24,6 +24,34 @@
       </el-tab-pane>
       <el-tab-pane label="作业" name="third">作业</el-tab-pane>
       <el-tab-pane label="试卷" name="fourth">试卷</el-tab-pane>
+      <el-tab-pane label="学习情况统计" name="fifth" v-if="elective != null">
+        <h1>学习情况统计</h1>
+        <div>
+          内容：{{ numberLearnedResource }}/ {{ resource.length }}
+          <p></p>
+          <el-progress
+            type="circle"
+            :percentage="parseInt(this.resourcePer)"
+          ></el-progress>
+        </div>
+        <div>
+          问答：{{ numberAnswerQuestion }}/ {{ questions.length }}
+          <p></p>
+          <el-progress
+            type="circle"
+            :percentage="
+              parseInt(
+                ((this.numberAnswerQuestion * 1.0) / this.questions.length) *
+                  1.0 *
+                  100
+              )
+            "
+          ></el-progress>
+        </div>
+        <div>作业：</div>
+        <div>测试：</div>
+        <div>成绩：</div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -34,20 +62,14 @@ export default {
     course: null,
     activeName: "first",
     elective: "null",
-    resource: [
-      { id: 1, name: "list" },
-      { id: 2, name: "map" },
-      { id: 3, name: "set" }
-    ],
+    resource: [],
     defaultProps: {
       children: "children",
       label: "label"
     },
-    questions: [
-      { id: 1, name: "list" },
-      { id: 2, name: "map" },
-      { id: 3, name: "set" }
-    ]
+    questions: [],
+    numberLearnedResource: 0,
+    numberAnswerQuestion: 0
   }),
   async created() {
     let res = await this.$http.get("/student/course/" + this.cid);
@@ -56,8 +78,18 @@ export default {
     this.elective = res.data.elective;
     this.resource = res.data.resources;
     this.questions = res.data.questions;
+    this.numberAnswerQuestion = res.data.numberAnswerQuestion;
+    this.numberLearnedResource = res.data.numberLearnedResource;
   },
   computed: {
+    resourcePer: function() {
+      console.log(
+        ((this.numberLearnedResource * 1.0) / this.resource.length) * 1.0
+      );
+      return (
+        ((this.numberLearnedResource * 1.0) / this.resource.length) * 1.0 * 100
+      );
+    },
     resourceName: function() {
       let resourceName = [];
       this.resource.forEach(e => {

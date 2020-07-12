@@ -28,9 +28,10 @@ import {
   Col,
   TabPane,
   Tabs,
-  Tree
+  Tree,
+  Progress
 } from "element-ui";
-
+Vue.use(Progress);
 Vue.use(Tree);
 Vue.use(TabPane);
 Vue.use(Tabs);
