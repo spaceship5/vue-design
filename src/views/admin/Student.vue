@@ -7,7 +7,7 @@
       </el-form-item>
 
       <el-form-item label="工号" prop="number">
-        <el-input v-model="submitForm.username"></el-input>
+        <el-input v-model="submitForm.number"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input v-model="submitForm.password"></el-input>

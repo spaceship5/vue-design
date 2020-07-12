@@ -52,6 +52,16 @@ let teacherRouts = [
         path: "/teacher/course/:cid",
         props: true,
         component: () => import("@/views/teacher/Course.vue")
+      },
+      {
+        path: "/teacher/course/:cid/resource/:rid",
+        props: true,
+        component: () => import("@/views/teacher/Resource.vue")
+      },
+      {
+        path: "/teacher/course/:cid/question/:qid",
+        props: true,
+        component: () => import("@/views/teacher/Question.vue")
       }
     ]
   }

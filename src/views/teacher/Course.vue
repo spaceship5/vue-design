@@ -152,10 +152,10 @@ export default {
   },
   methods: {
     toResource(data) {
-      this.$router.push("/student/course/" + this.cid + "/resource/" + data.id);
+      this.$router.push("/teacher/course/" + this.cid + "/resource/" + data.id);
     },
     toQuestion(data) {
-      this.$router.push("/student/course/" + this.cid + "/question/" + data.id);
+      this.$router.push("/teacher/course/" + this.cid + "/question/" + data.id);
     },
     handleClick() {},
     addResource() {
