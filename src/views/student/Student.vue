@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <div style="margin:10px">
-        <span>{{ name }}管理员您好，欢迎您使用系统</span>
+        <span>同学您好，欢迎您使用系统</span>
       </div>
       <el-button type="info" plain @click="logout" class="logoutBtn">
         退出
@@ -19,22 +19,23 @@
           text-color="#fff"
           active-text-color="#ffd04b"
         >
-          <router-link to="/addTeacher">
+          <router-link to="/student/mycourse">
             <el-menu-item index="1">
               <i class="el-icon-location"></i>
-              添加教师
+              我的课程
             </el-menu-item>
           </router-link>
-          <router-link to="/listTeacher">
+          <router-link to="/student/courses">
             <el-menu-item index="2">
               <i class="el-icon-menu"></i>
-              <span slot="title">教师列表</span>
+              <span slot="title">选修课程</span>
             </el-menu-item>
           </router-link>
-          <router-link to="/adminSetting">
+
+          <router-link to="/student/setting">
             <el-menu-item index="3">
-              <i class="el-icon-location"></i>
-              账号管理
+              <i class="el-icon-setting"></i>
+              <span slot="title">账号管理</span>
             </el-menu-item>
           </router-link>
         </el-menu>
@@ -45,16 +46,17 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { LOGIN } from "@/store/type.js";
+
 export default {
   data() {
-    return {
-      name: ""
-    };
+    return {};
   },
   methods: {
     logout() {
       window.sessionStorage.clear();
       this.$router.push("/login");
+      this.$store.commit(LOGIN, false);
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -63,10 +65,7 @@ export default {
       console.log(key, keyPath);
     }
   },
-  computed: {},
-  created: function() {
-    this.name = window.sessionStorage.getItem("name");
-  }
+  computed: {}
 };
 </script>
 <style scope>
@@ -89,17 +88,14 @@ export default {
   text-align: center;
   line-height: 200px;
 }
-
 .el-main {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
 }
-
 body > .el-container {
   margin-bottom: 40px;
 }
-
 .el-container {
   height: 100%;
 }

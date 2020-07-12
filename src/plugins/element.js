@@ -23,9 +23,19 @@ import {
   TableColumn,
   popover,
   tag,
-  Dialog
+  Dialog,
+  Card,
+  Col,
+  TabPane,
+  Tabs,
+  Tree
 } from "element-ui";
 
+Vue.use(Tree);
+Vue.use(TabPane);
+Vue.use(Tabs);
+Vue.use(Card);
+Vue.use(Col);
 Vue.use(Dialog);
 Vue.use(popover);
 Vue.use(Table);

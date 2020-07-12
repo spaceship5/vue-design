@@ -20,8 +20,7 @@ const myMutations = {
   },
   [types.LOGIN](state, data) {
     state.isLogin = data;
-  },
- 
+  }
 };
 const myActions = {
   [types.UPDATEUSER]({ commit }, data) {
@@ -39,15 +38,6 @@ const myActions = {
       commit(types.LOGIN, true);
       commit("name", resp.data.name);
     }
-  },
-  async teacheres({ commit }) {
-    let resp = await axios.get("admin/teachers");
-    commit("teacheres", resp.data.teachers);
-  },
-  async directions({ commit }, data) {
-    let resp = await axios.get("student/directionsByTeacherId/" + data.tid);
-    commit("directions", resp.data.directions);
-    return Promise.resolve(resp.data.directions);
   }
 };
 export default new Vuex.Store({
