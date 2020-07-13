@@ -27,8 +27,24 @@
           @node-click="toQuestion"
         ></el-tree>
       </el-tab-pane>
-      <el-tab-pane label="作业" name="third">作业</el-tab-pane>
-      <el-tab-pane label="试卷" name="fourth">试卷</el-tab-pane>
+      <el-tab-pane label="作业" name="third">
+        <header>
+          <span>添加作业</span>
+          <el-button type="primary" @click="addHomework">添加</el-button>
+        </header>
+       <!-- <el-tree
+          :data="homeworkName"
+          :props="defaultProps"
+          @node-click="toHomework"
+        ></el-tree> -->
+        </el-tab-pane>
+      <el-tab-pane label="试卷" name="fourth">
+        <header>
+          <span>添加考试</span>
+          <el-button type="primary" @click="addTest">添加</el-button>
+        </header>
+        
+      </el-tab-pane>
     </el-tabs>
     <el-dialog
       title="添加内容"
@@ -78,17 +94,44 @@
         </el-button>
       </el-form>
     </el-dialog>
+
+
+<el-dialog
+      title="添加作业"
+      :visible.sync="homeworkDialogVisible"
+      width="30%"
+      center
+    >
+      <el-form :model="subForm" class="sumbit" :rules="rules">
+        <h1>添加作业</h1>
+         <el-form-item label="标题" prop="title">
+          <el-input v-model="subForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="detail">
+          <el-input v-model="subForm.detail"></el-input>
+        </el-form-item>
+        
+        <el-button type="primary" @click="submitHomework">
+         添加作业
+        </el-button>
+      </el-form>
+    </el-dialog>  
+
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
   props: ["cid"],
   data: () => ({
     questionDialogVisible: false,
     resourceDialogVisible: false,
+    homeworkDialogVisible:false,
+    testDialogVisible:false,
     course: null,
     activeName: "first",
     elective: "null",
+    selectedValue:"1",
     resource: [
       { id: 1, name: "list" },
       { id: 2, name: "map" },
@@ -103,21 +146,41 @@ export default {
       { id: 2, name: "map" },
       { id: 3, name: "set" }
     ],
+    homework: [
+      { id: 1, name: "list" },
+      { id: 2, name: "map" },
+      { id: 3, name: "set" }
+    ],
+    test: [
+      { id: 1, name: "list" },
+      { id: 2, name: "map" },
+      { id: 3, name: "set" }
+    ],
     subForm: {
       id: null,
+      isTest:null,
       title: null,
       name: null,
       content: null,
       detail: null,
+      current:null,
+      error1:null,
+      error2:null,
+      error3:null,
       type: null,
       url: null
     },
     rules: {
+      isTest: [{ required: true, message: "不可为空", trigger: "blur" }],
       name: [{ required: true, message: "不可为空", trigger: "blur" }],
       title: [{ required: true, message: "不可为空", trigger: "blur" }],
       content: [{ required: true, message: "不可为空", trigger: "blur" }],
       type: [{ required: true, message: "不可为空", trigger: "blur" }],
       detail: [{ required: true, message: "不可为空", trigger: "blur" }],
+      current:[{ required: true, message: "不可为空", trigger: "blur" }],
+      error1:[{ required: true, message: "不可为空", trigger: "blur" }],
+      error2:[{ required: true, message: "不可为空", trigger: "blur" }],
+      error3:[{ required: true, message: "不可为空", trigger: "blur" }],
       url: [{ required: true, message: "不可为空", trigger: "blur" }]
     }
   }),
@@ -127,8 +190,11 @@ export default {
     this.course = res.data.course;
     this.resource = res.data.resources;
     this.questions = res.data.questions;
+    this.homework=res.data.homework;
+    this.test=res.data.test;
   },
   computed: {
+    
     resourceName: function() {
       let resourceName = [];
       this.resource.forEach(e => {
@@ -148,14 +214,44 @@ export default {
         });
       });
       return resourceName;
+    },
+    homeworkName: function() {
+      let homeworkName = [];
+      this.homework.forEach(e => {
+        homeworkName.push({
+          label: e.title,
+          id: e.id
+        });
+      });
+      return homeworkName;
+    },
+    testName: function() {
+      let testName = [];
+      this.test.forEach(e => {
+        testName.push({
+          label: e.title,
+          id: e.id
+        });
+      });
+      return testName;
     }
+ 
   },
   methods: {
+    change(event){
+      this.selectedValue=event.target.value;
+    },
     toResource(data) {
       this.$router.push("/teacher/course/" + this.cid + "/resource/" + data.id);
     },
     toQuestion(data) {
       this.$router.push("/teacher/course/" + this.cid + "/question/" + data.id);
+    },
+    toHomework(data) {
+      this.$router.push("/teacher/course/" + this.cid + "/tests/" + data.id+"/test");
+    },
+    toTest(data) {
+      this.$router.push("/teacher/course/" + this.cid + "/tests/" + data.id+"/test");
     },
     handleClick() {},
     addResource() {
@@ -163,6 +259,12 @@ export default {
     },
     addQuestion() {
       this.questionDialogVisible = true;
+    },
+    addHomework() {
+      this.homeworkDialogVisible = true;
+    },
+    addTest() {
+      this.testDialogVisible= true;
     },
     async submitQuestion() {
       this.subForm.id = this.cid;
@@ -179,7 +281,24 @@ export default {
         this.$router.go(0);
         this.$message.success("添加成功");
       }
+    },
+    async submitHomework() {
+      this.subForm.id = this.cid;
+      let res = await this.$http.post("/teacher/tests", this.subForm);
+      if (res != null) {
+        this.$router.go(0);
+        this.$message.success("添加成功");
+      }
+    },
+    async submitTest() {
+      this.subForm.id = this.cid;
+      let res = await this.$http.post("/teacher/tests", this.subForm);
+      if (res != null) {
+        this.$router.go(0);
+        this.$message.success("添加成功");
+      }
     }
+
   }
 };
 </script>

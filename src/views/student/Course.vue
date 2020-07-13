@@ -22,8 +22,16 @@
           @node-click="toQuestion"
         ></el-tree>
       </el-tab-pane>
-      <el-tab-pane label="作业" name="third">作业</el-tab-pane>
-      <el-tab-pane label="试卷" name="fourth">试卷</el-tab-pane>
+      <el-tab-pane label="作业" name="third">
+        <el-button type="text" class="button" @click="toHomeworks()">
+                作业
+              </el-button> 
+        </el-tab-pane>
+      <el-tab-pane label="试卷" name="fourth">
+        <el-button type="text" class="button" @click="toTests()">
+                试卷
+              </el-button> 
+        </el-tab-pane>
       <el-tab-pane label="学习情况统计" name="fifth" v-if="elective != null">
         <h1>学习情况统计</h1>
         <div>
@@ -68,6 +76,7 @@ export default {
       label: "label"
     },
     questions: [],
+  
     numberLearnedResource: 0,
     numberAnswerQuestion: 0
   }),
@@ -78,6 +87,7 @@ export default {
     this.elective = res.data.elective;
     this.resource = res.data.resources;
     this.questions = res.data.questions;
+   
     this.numberAnswerQuestion = res.data.numberAnswerQuestion;
     this.numberLearnedResource = res.data.numberLearnedResource;
   },
@@ -112,6 +122,12 @@ export default {
     }
   },
   methods: {
+    toHomeworks(data){
+        this.$router.push("/student/course/" + this.cid + "/homeworks");
+    },
+    toTests(data){
+        this.$router.push("/student/course/" + this.cid + "/tests");
+    },
     toResource(data) {
       this.$router.push("/student/course/" + this.cid + "/resource/" + data.id);
     },

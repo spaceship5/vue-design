@@ -88,6 +88,36 @@ let studentRouts = [
         props: true,
         component: () => import("@/views/student/Course.vue")
       },
+      //考试管理👇
+      {
+        props:true,
+        path:"/teacher/course/:cid",
+        component: () => import("@/views/teacher/AddTests.vue")
+      },
+      {
+        props:true,
+        path:"/student/course/:cid/homeworks",
+        component:() => import("@/views/test/Homeworks.vue")
+      },
+
+      {
+        props:true,
+        path:"/student/course/:cid/homeworks/:hid",
+        component:() => import("@/views/test/Homework.vue")
+      },
+
+      {
+        props:true,
+        path:"/student/course/:cid/tests",
+        component:() => import("@/views/test/Tests.vue")
+      },
+
+      {
+        props:true,
+        path:"/student/course/:cid/tests/:tid",
+        component:() => import("@/views/test/Test.vue")
+      },
+       //考试管理👆
       {
         path: "/student/course/:cid/resource/:rid",
         props: true,
@@ -101,6 +131,7 @@ let studentRouts = [
     ]
   }
 ];
+
 const teacherRole = "4bcbb36cf4cf63bc4b";
 const studentRole = "534bcf636cf6cb0cf6";
 const adminRole = "2a4bcfa36cf6340dv6";

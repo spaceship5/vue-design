@@ -45,7 +45,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import { LOGIN } from "@/store/type.js";
+import { LOGIN } from "@/store/types.js";
 export default {
   data() {
     return {

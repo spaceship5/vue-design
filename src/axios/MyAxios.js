@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_EXCEPTION } from "@/store/type";
+import { GET_EXCEPTION } from "@/store/types";
 import store from "@/store/index";
 axios.defaults.baseURL = "/api/";
 //请求拦截器
