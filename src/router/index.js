@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "@/components/Login.vue";
-import Welcome from "@/components/Welcome.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -49,7 +48,27 @@ let teacherRouts = [
         component: () => import("@/views/teacher/Setting.vue")
       },
       {
-        path: "/teacher/course/:cid",
+        props: true,
+        path: "/teacher/courses/{cid}/homeworks",
+        components: () => import("@/views/teacher/HomeWorkList.vue")
+      },
+      {
+        props: true,
+        path: "/teacher/courses/{cid}/tests",
+        components: () => import("@/views/teacher/TestList.vue")
+      },
+      {
+        props: true,
+        path: "/teacher/courses/:cid/tests/:tid/addTestQuestion",
+        components: () => import("@/views/teacher/AddTestQuestion.vue")
+      },
+      {
+        props: true,
+        path: "/teacher/courses/:cid/tests/:tid/testQuestion",
+        components: () => import("@/views/teacher/TestQuestions.vue")
+      },
+      {
+        path: "/teacher/courses/:cid",
         props: true,
         component: () => import("@/views/teacher/Course.vue")
       },
@@ -88,36 +107,21 @@ let studentRouts = [
         props: true,
         component: () => import("@/views/student/Course.vue")
       },
-      //考试管理👇
       {
-        props:true,
-        path:"/teacher/course/:cid",
-        component: () => import("@/views/teacher/AddTests.vue")
+        path: "/student/course/:cid/homeWorkList",
+        props: true,
+        component: () => import("@/views/student/HomeWorkList.vue")
       },
       {
-        props:true,
-        path:"/student/course/:cid/homeworks",
-        component:() => import("@/views/test/Homeworks.vue")
+        path: "/student/course/:cid/testList",
+        props: true,
+        component: () => import("@/views/student/TestList.vue")
       },
-
       {
-        props:true,
-        path:"/student/course/:cid/homeworks/:hid",
-        component:() => import("@/views/test/Homework.vue")
+        path: "/student/course/:cid/tests/:hid/test",
+        props: true,
+        component: () => import("@/views/student/TestQuestion.vue")
       },
-
-      {
-        props:true,
-        path:"/student/course/:cid/tests",
-        component:() => import("@/views/test/Tests.vue")
-      },
-
-      {
-        props:true,
-        path:"/student/course/:cid/tests/:tid",
-        component:() => import("@/views/test/Test.vue")
-      },
-       //考试管理👆
       {
         path: "/student/course/:cid/resource/:rid",
         props: true,

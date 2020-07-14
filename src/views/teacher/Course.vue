@@ -32,18 +32,14 @@
           <span>添加作业</span>
           <el-button type="primary" @click="addHomework">添加</el-button>
         </header>
-       <!-- <el-tree
-          :data="homeworkName"
-          :props="defaultProps"
-          @node-click="toHomework"
-        ></el-tree> -->
-        </el-tab-pane>
+        <el-button type="primary" @click="toHomework">作业</el-button>
+      </el-tab-pane>
       <el-tab-pane label="试卷" name="fourth">
         <header>
           <span>添加考试</span>
           <el-button type="primary" @click="addTest">添加</el-button>
         </header>
-        
+        <el-button type="primary" @click="toTest">考试</el-button>
       </el-tab-pane>
     </el-tabs>
     <el-dialog
@@ -95,8 +91,7 @@
       </el-form>
     </el-dialog>
 
-
-<el-dialog
+    <el-dialog
       title="添加作业"
       :visible.sync="homeworkDialogVisible"
       width="30%"
@@ -104,34 +99,33 @@
     >
       <el-form :model="subForm" class="sumbit" :rules="rules">
         <h1>添加作业</h1>
-         <el-form-item label="标题" prop="title">
+        <el-form-item label="标题" prop="title">
           <el-input v-model="subForm.title"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="detail">
           <el-input v-model="subForm.detail"></el-input>
         </el-form-item>
-        
+
         <el-button type="primary" @click="submitHomework">
-         添加作业
+          添加作业
         </el-button>
       </el-form>
-    </el-dialog>  
-
+    </el-dialog>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   props: ["cid"],
   data: () => ({
     questionDialogVisible: false,
     resourceDialogVisible: false,
-    homeworkDialogVisible:false,
-    testDialogVisible:false,
+    homeworkDialogVisible: false,
+    testDialogVisible: false,
     course: null,
     activeName: "first",
     elective: "null",
-    selectedValue:"1",
+    selectedValue: "1",
     resource: [
       { id: 1, name: "list" },
       { id: 2, name: "map" },
@@ -151,22 +145,22 @@ export default {
       { id: 2, name: "map" },
       { id: 3, name: "set" }
     ],
-    test: [
+    tests: [
       { id: 1, name: "list" },
       { id: 2, name: "map" },
       { id: 3, name: "set" }
     ],
     subForm: {
       id: null,
-      isTest:null,
+      isTest: null,
       title: null,
       name: null,
       content: null,
       detail: null,
-      current:null,
-      error1:null,
-      error2:null,
-      error3:null,
+      current: null,
+      error1: null,
+      error2: null,
+      error3: null,
       type: null,
       url: null
     },
@@ -177,24 +171,22 @@ export default {
       content: [{ required: true, message: "不可为空", trigger: "blur" }],
       type: [{ required: true, message: "不可为空", trigger: "blur" }],
       detail: [{ required: true, message: "不可为空", trigger: "blur" }],
-      current:[{ required: true, message: "不可为空", trigger: "blur" }],
-      error1:[{ required: true, message: "不可为空", trigger: "blur" }],
-      error2:[{ required: true, message: "不可为空", trigger: "blur" }],
-      error3:[{ required: true, message: "不可为空", trigger: "blur" }],
+      current: [{ required: true, message: "不可为空", trigger: "blur" }],
+      error1: [{ required: true, message: "不可为空", trigger: "blur" }],
+      error2: [{ required: true, message: "不可为空", trigger: "blur" }],
+      error3: [{ required: true, message: "不可为空", trigger: "blur" }],
       url: [{ required: true, message: "不可为空", trigger: "blur" }]
     }
   }),
   async created() {
-    let res = await this.$http.get("/student/course/" + this.cid);
+    let res = await this.$http.get("/teacher/courses/" + this.cid);
     console.log(res);
     this.course = res.data.course;
     this.resource = res.data.resources;
     this.questions = res.data.questions;
-    this.homework=res.data.homework;
-    this.test=res.data.test;
+    this.tests = res.data.tests;
   },
   computed: {
-    
     resourceName: function() {
       let resourceName = [];
       this.resource.forEach(e => {
@@ -225,33 +217,29 @@ export default {
       });
       return homeworkName;
     },
-    testName: function() {
-      let testName = [];
+    testsName: function() {
+      let testsName = [];
       this.test.forEach(e => {
-        testName.push({
+        testsName.push({
           label: e.title,
           id: e.id
         });
       });
-      return testName;
+      return testsName;
     }
- 
   },
   methods: {
-    change(event){
-      this.selectedValue=event.target.value;
-    },
     toResource(data) {
       this.$router.push("/teacher/course/" + this.cid + "/resource/" + data.id);
     },
     toQuestion(data) {
       this.$router.push("/teacher/course/" + this.cid + "/question/" + data.id);
     },
-    toHomework(data) {
-      this.$router.push("/teacher/course/" + this.cid + "/tests/" + data.id+"/test");
+    toHomeworks(data) {
+      this.$router.push("/teacher/courses/" + this.cid + "/tests" + data.id);
     },
-    toTest(data) {
-      this.$router.push("/teacher/course/" + this.cid + "/tests/" + data.id+"/test");
+    toTests(data) {
+      this.$router.push("/teacher/courses/" + this.cid + "/tests" + data.id);
     },
     handleClick() {},
     addResource() {
@@ -259,12 +247,6 @@ export default {
     },
     addQuestion() {
       this.questionDialogVisible = true;
-    },
-    addHomework() {
-      this.homeworkDialogVisible = true;
-    },
-    addTest() {
-      this.testDialogVisible= true;
     },
     async submitQuestion() {
       this.subForm.id = this.cid;
@@ -284,7 +266,7 @@ export default {
     },
     async submitHomework() {
       this.subForm.id = this.cid;
-      let res = await this.$http.post("/teacher/tests", this.subForm);
+      let res = await this.$http.post("/courses/{cid}/tests", this.subForm);
       if (res != null) {
         this.$router.go(0);
         this.$message.success("添加成功");
@@ -292,13 +274,12 @@ export default {
     },
     async submitTest() {
       this.subForm.id = this.cid;
-      let res = await this.$http.post("/teacher/tests", this.subForm);
+      let res = await this.$http.post("/courses/{cid}/tests", this.subForm);
       if (res != null) {
         this.$router.go(0);
         this.$message.success("添加成功");
       }
     }
-
   }
 };
 </script>

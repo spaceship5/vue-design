@@ -14,7 +14,7 @@
               <p>{{ c.detail }}</p>
               <time class="time">{{ c.updateTime }}</time>
               <p></p>
-              <el-button type="text" class="button" @click="toCourse(c.id)">
+              <el-button type="primary" class="button" @click="toCourse(c.id)">
                 课程详情
               </el-button>
               <el-button type="primary" class="button" @click="updateCourse(c)">
@@ -164,10 +164,11 @@ export default {
     let res = await this.$http.get("/teacher/courses");
     console.log(res);
     this.courses = res.data.courses;
+    console.log(res.data);
   },
   methods: {
     toCourse(cid) {
-      this.$router.push("/teacher/course/" + cid);
+      this.$router.push("/teacher/courses/" + cid);
     },
     addCourse() {
       this.centerDialogVisible = true;

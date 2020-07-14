@@ -25,6 +25,10 @@
               课程管理
             </el-menu-item>
           </router-link>
+          <el-menu-item index="3">
+            <i class="el-icon-location"></i>
+            作业查重
+          </el-menu-item>
           <router-link to="/teacher/setting">
             <el-menu-item index="2">
               <i class="el-icon-setting"></i>
