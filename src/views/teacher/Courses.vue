@@ -168,7 +168,7 @@ export default {
   },
   methods: {
     toCourse(cid) {
-      this.$router.push("/teacher/course/" + this.cid);
+      this.$router.push("/teacher/course/" + cid);
     },
     addCourse() {
       this.centerDialogVisible = true;
