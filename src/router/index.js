@@ -51,25 +51,11 @@ let teacherRouts = [
         props: true,
         path: "/teacher/courses/:cid/homeworks",
         component: () => import("@/views/teacher/HomeWorkList.vue")
-        // children: [
-        //   {
-        //     props: true,
-        //     path: ":tid/addTestQuestion",
-        //     component: () => import("@/views/teacher/AddTestQuestion.vue")
-        //   }
-        // ]
       },
       {
         props: true,
         path: "/teacher/courses/:cid/tests",
         component: () => import("@/views/teacher/TestList.vue")
-        // children: [
-        //   {
-        //     props: true,
-        //     path: ":tid/addTestQuestion",
-        //     component: () => import("@/views/teacher/AddTestQuestion.vue")
-        //   }
-        // ]
       },
       {
         props: true,
