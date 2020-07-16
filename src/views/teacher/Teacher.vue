@@ -26,7 +26,7 @@
             </el-menu-item>
           </router-link>
           <el-menu-item index="3">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-coordinate"></i>
             作业查重
           </el-menu-item>
           <router-link to="/teacher/setting">

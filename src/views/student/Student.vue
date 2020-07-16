@@ -31,8 +31,8 @@
               <span slot="title">选修课程</span>
             </el-menu-item>
           </router-link>
-          <el-menu-item index="1">
-            <i class="el-icon-location"></i>
+          <el-menu-item index="4">
+            <i class="el-icon-s-help"></i>
             成绩打印
           </el-menu-item>
           <router-link to="/student/setting">

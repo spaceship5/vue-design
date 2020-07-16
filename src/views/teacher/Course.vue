@@ -33,13 +33,24 @@
           <el-button type="primary" @click="addHomework">添加</el-button>
         </header>
         <el-button type="primary" @click="toHomework">作业</el-button>
+        <router-view></router-view>
+        <!-- <el-tree
+          :data="homeworkName"
+          :props="defaultProps"
+          @node-click="toHomework"
+        ></el-tree> -->
       </el-tab-pane>
-      <el-tab-pane label="试卷" name="fourth">
+      <el-tab-pane label="考试" name="fourth">
         <header>
           <span>添加考试</span>
           <el-button type="primary" @click="addTest">添加</el-button>
         </header>
         <el-button type="primary" @click="toTest">考试</el-button>
+        <!-- <el-tree
+          :data="testName"
+          :props="defaultProps"
+          @node-click="toTest"
+        ></el-tree> -->
       </el-tab-pane>
     </el-tabs>
     <el-dialog
@@ -111,6 +122,26 @@
         </el-button>
       </el-form>
     </el-dialog>
+    <el-dialog
+      title="添加考试"
+      :visible.sync="testDialogVisible"
+      width="30%"
+      center
+    >
+      <el-form :model="subForm" class="sumbit" :rules="rules">
+        <h1>添加作业</h1>
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="subForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="detail">
+          <el-input v-model="subForm.detail"></el-input>
+        </el-form-item>
+
+        <el-button type="primary" @click="submitTest">
+          添加考试
+        </el-button>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -179,7 +210,7 @@ export default {
     }
   }),
   async created() {
-    let res = await this.$http.get("/teacher/courses/" + this.cid);
+    let res = await this.$http.get("/student/course/" + this.cid);
     console.log(res);
     this.course = res.data.course;
     this.resource = res.data.resources;
@@ -217,15 +248,15 @@ export default {
       });
       return homeworkName;
     },
-    testsName: function() {
-      let testsName = [];
-      this.test.forEach(e => {
-        testsName.push({
+    testName: function() {
+      let homeworkName = [];
+      this.homework.forEach(e => {
+        homeworkName.push({
           label: e.title,
           id: e.id
         });
       });
-      return testsName;
+      return homeworkName;
     }
   },
   methods: {
@@ -235,11 +266,11 @@ export default {
     toQuestion(data) {
       this.$router.push("/teacher/course/" + this.cid + "/question/" + data.id);
     },
-    toHomeworks(data) {
-      this.$router.push("/teacher/courses/" + this.cid + "/tests" + data.id);
+    toHomework(data) {
+      this.$router.push("/teacher/courses/" + this.cid + "/homeworks");
     },
-    toTests(data) {
-      this.$router.push("/teacher/courses/" + this.cid + "/tests" + data.id);
+    toTest(data) {
+      this.$router.push("/teacher/courses/" + this.cid + "/tests");
     },
     handleClick() {},
     addResource() {
@@ -247,6 +278,12 @@ export default {
     },
     addQuestion() {
       this.questionDialogVisible = true;
+    },
+    addHomework() {
+      this.homeworkDialogVisible = true;
+    },
+    addTest() {
+      this.testDialogVisible = true;
     },
     async submitQuestion() {
       this.subForm.id = this.cid;
@@ -266,7 +303,10 @@ export default {
     },
     async submitHomework() {
       this.subForm.id = this.cid;
-      let res = await this.$http.post("/courses/{cid}/tests", this.subForm);
+      let res = await this.$http.post(
+        "/teacher/courses/" + this.cid + "/tests",
+        this.subForm
+      );
       if (res != null) {
         this.$router.go(0);
         this.$message.success("添加成功");
@@ -274,7 +314,10 @@ export default {
     },
     async submitTest() {
       this.subForm.id = this.cid;
-      let res = await this.$http.post("/courses/{cid}/tests", this.subForm);
+      let res = await this.$http.post(
+        "/teacher/courses/" + this.cid + "/tests",
+        this.subForm
+      );
       if (res != null) {
         this.$router.go(0);
         this.$message.success("添加成功");

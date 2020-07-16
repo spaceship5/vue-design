@@ -27,11 +27,21 @@
           作业
         </el-button>
       </el-tab-pane>
-      <el-tab-pane label="试卷" name="fourth">
+      <!-- <el-tree
+        :data="homeworkName"
+        :props="defaultProps"
+        @node-click="toHomeWorkList"
+      ></el-tree> -->
+      <el-tab-pane label="考试" name="fourth">
         <el-button type="button" class="button" @click="toTestList">
-          试卷
+          考试列表
         </el-button>
       </el-tab-pane>
+      <!-- <el-tree
+        :data="testName"
+        :props="defaultProps"
+        @node-click="toTestList"
+      ></el-tree> -->
       <el-tab-pane label="学习情况统计" name="fifth" v-if="elective != null">
         <h1>学习情况统计</h1>
         <div>
@@ -71,6 +81,7 @@ export default {
     activeName: "first",
     elective: "null",
     resource: [],
+    tests: [],
     defaultProps: {
       children: "children",
       label: "label"
@@ -87,7 +98,7 @@ export default {
     this.elective = res.data.elective;
     this.resource = res.data.resources;
     this.questions = res.data.questions;
-
+    this.tests = res.data.tests;
     this.numberAnswerQuestion = res.data.numberAnswerQuestion;
     this.numberLearnedResource = res.data.numberLearnedResource;
   },
@@ -119,6 +130,26 @@ export default {
         });
       });
       return resourceName;
+    },
+    homeworkName: function() {
+      let homeworkName = [];
+      this.questions.forEach(e => {
+        homeworkName.push({
+          label: e.title,
+          id: e.id
+        });
+      });
+      return homeworkName;
+    },
+    testName: function() {
+      let testName = [];
+      this.questions.forEach(e => {
+        testName.push({
+          label: e.title,
+          id: e.id
+        });
+      });
+      return testName;
     }
   },
   methods: {

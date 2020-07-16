@@ -1,39 +1,50 @@
 <template>
   <div>
-    <h1>作业列表</h1>
-    <ul>
-      <li v-for="(h, index) in homeworks" :key="index">
-        {{ h.title }}
-        <button type="button" @click="toEditTest(h.id)">编辑</button>
-        <button type="button" @click="toCheckTest(h.id)">批改</button>
-      </li>
-    </ul>
-    <router-view />
+    <el-form>
+      <h1>作业列表</h1>
+      <ol type="1">
+        <el-form-item>
+          <li v-for="(h, index) in homeworks" :key="index">
+            {{ h.title }}
+            <el-button type="button" @click="toTest(h.id)">
+              浏览
+            </el-button>
+            <router-view />
+            <el-button type="success" @click="toEditTest(h.id)">编辑</el-button>
+            <el-button type="button" @click="toCheckTest(h.id)">批改</el-button>
+          </li>
+        </el-form-item>
+      </ol>
+    </el-form>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 export default {
-  porps: ["cid"],
+  props: ["cid"],
+  data() {
+    return {
+      homeworks: []
+    };
+  },
   async created() {
-    let res = await this.$http.get("/teacher/courses/{cid}/tests");
+    let res = await this.$http.get("/teacher/course/" + this.cid + "/tests");
     console.log(res);
     this.homeworks = res.data.tests;
-    this.cid = res.data.cid;
   },
   methods: {
-    toEditTest(hid) {
+    toTest(tid) {
       this.$router.push(
-        "/teacher/courses/" +
-          this.cid +
-          "/tests/" +
-          this.hid +
-          "/addTestQuestion"
+        "/student/course/" + this.cid + "/tests/" + tid + "/test"
       );
     },
-    toCheckTest(hid) {
+    toEditTest(tid) {
       this.$router.push(
-        "/teacher/courses/" + this.cid + "/tests/" + this.hid + "/testQuestion"
+        "/teacher/courses/" + this.cid + "/tests/" + tid + "/addTestQuestion"
+      );
+    },
+    toCheckTest(tid) {
+      this.$router.push(
+        "/teacher/courses/" + this.cid + "/tests/" + tid + "/testQuestion"
       );
     }
   }

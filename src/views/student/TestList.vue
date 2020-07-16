@@ -1,24 +1,22 @@
 <template>
   <div>
-    <h1>试卷列表</h1>
+    <h1>考试列表</h1>
     <ul>
       <li v-for="(t, index) in tests" :key="index">
         {{ t.title }}
-        <button type="button" @click="toTest(t.id)">答题</button>
+        <button type="button" @click="toTest(t.id)">进入考试</button>
       </li>
     </ul>
     <router-view />
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 export default {
-  porps: ["cid"],
+  props: ["cid"],
   async created() {
-    let res = await this.$http.get("/student/course/{cid}/tests");
+    let res = await this.$http.get("/student/course/" + this.cid + "/tests");
     console.log(res);
     this.tests = res.data.tests;
-    this.cid = res.data.cid;
   },
   methods: {
     toTest(hid) {

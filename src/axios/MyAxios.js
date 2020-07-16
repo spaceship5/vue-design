@@ -2,6 +2,7 @@ import axios from "axios";
 import { GET_EXCEPTION } from "@/store/types";
 import store from "@/store/index";
 axios.defaults.baseURL = "/api/";
+axios.defaults.timeout = 1000;
 //请求拦截器
 axios.interceptors.request.use(
   req => {

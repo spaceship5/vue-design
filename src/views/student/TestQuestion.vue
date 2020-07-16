@@ -1,16 +1,20 @@
 <template>
-  <div v-if="homework">
+  <div>
+    {{ test.title }}
     <el-form
       :v-model="subForm"
       :rules="rules"
-      v-for="(q, index) in homework"
+      v-for="(q, index) in testQuestions"
       :key="index"
     >
       <div v-if="q.type == 1">
+        <el-form-item>
+          <li>
+            <h2>{{ q.title }}</h2>
+            <h2>{{ q.detail }}</h2>
+          </li>
+        </el-form-item>
         <ol type="A">
-          <el-form-item>
-            <li>{{ q.title }}</li>
-          </el-form-item>
           <el-form-item>
             <label>
               <input type="checkbox" :v-model="subForm.answer" />
@@ -39,65 +43,75 @@
       </div>
       <div v-if="q.type == 2">
         <el-form-item>
-          <p>
-            {{ q.title }}
-            <input type="text" :v-model="subForm.answer" />
-          </p>
+          <h2>{{ q.title }}</h2>
+          <h2>{{ q.detail }}</h2>
+          <input type="text" :v-model="subForm.answer" />
         </el-form-item>
       </div>
       <div v-if="q.type == 3">
         <el-form-item>
-          <p>{{ q.title }}</p>
+          <h2>{{ q.title }}</h2>
+          <h2>{{ q.detail }}</h2>
         </el-form-item>
         <el-form-item>
           <label>
-            <input type="checkbox" :v-model="subForm.answer" />
+            <input type="checkbox" :v-model="subForm.answer" value="1" />
             √
           </label>
         </el-form-item>
         <el-form-item>
           <label>
-            <input type="checkbox" :v-model="subForm.answer" />
+            <input type="checkbox" :v-model="subForm.answer" value="0" />
             ×
           </label>
         </el-form-item>
       </div>
       <div v-if="q.type == 4">
         <el-form-item>
-          <p>{{ q.title }}</p>
+          <h2>{{ q.title }}</h2>
+          <h2>{{ q.detail }}</h2>
         </el-form-item>
         <el-form-item>
           <input type="text" row="30" col="30" :v-model="subForm.answer" />
         </el-form-item>
       </div>
       <el-button type="submit" @click="submit">提交</el-button>
+      <hr />
     </el-form>
   </div>
 </template>
 <script>
 export default {
-  props: ["cid", "hid"],
-
-  subForm: {
-    id: null,
-    answer: null
-  },
-  rules: {
-    answer: [{ required: true, message: "不可为空", trigger: "blur" }]
+  props: ["cid", "tid"],
+  data() {
+    return {
+      test: null,
+      testQuestions: [],
+      subForm: {
+        id: null,
+        answer: null
+      },
+      rules: {
+        answer: [{ required: true, message: "不可为空", trigger: "blur" }]
+      }
+    };
   },
   async created() {
-    let res = await this.$http.get("/student/tests/{tid}/test");
+    let res = await this.$http.get(
+      "/student/tests/" + this.tid + "/testQuestions"
+    );
+    let res1 = await this.$http.get("/student/tests/" + this.tid + "/test");
     console.log(res);
-    this.test = res.data.test;
+    this.testQuestions = res.data.testQuestions;
+    this.test = res1.data.test;
   },
   methods: {
-    async submitHomework() {
+    async submit() {
       this.subForm.id = this.q.id;
-      let res = await this.$http.post("answerTestQuestion", this.subForm);
-      if (res != null) {
-        this.$router.go(0);
-        this.$message.success("提交成功");
-      }
+      let res = await this.$http.post(
+        "/student/answerTestQuestion",
+        this.subForm
+      );
     }
   }
 };

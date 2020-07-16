@@ -49,26 +49,40 @@ let teacherRouts = [
       },
       {
         props: true,
-        path: "/teacher/courses/{cid}/homeworks",
-        components: () => import("@/views/teacher/HomeWorkList.vue")
+        path: "/teacher/courses/:cid/homeworks",
+        component: () => import("@/views/teacher/HomeWorkList.vue")
+        // children: [
+        //   {
+        //     props: true,
+        //     path: ":tid/addTestQuestion",
+        //     component: () => import("@/views/teacher/AddTestQuestion.vue")
+        //   }
+        // ]
       },
       {
         props: true,
-        path: "/teacher/courses/{cid}/tests",
-        components: () => import("@/views/teacher/TestList.vue")
+        path: "/teacher/courses/:cid/tests",
+        component: () => import("@/views/teacher/TestList.vue")
+        // children: [
+        //   {
+        //     props: true,
+        //     path: ":tid/addTestQuestion",
+        //     component: () => import("@/views/teacher/AddTestQuestion.vue")
+        //   }
+        // ]
       },
       {
         props: true,
         path: "/teacher/courses/:cid/tests/:tid/addTestQuestion",
-        components: () => import("@/views/teacher/AddTestQuestion.vue")
+        component: () => import("@/views/teacher/AddTestQuestion.vue")
       },
       {
         props: true,
         path: "/teacher/courses/:cid/tests/:tid/testQuestion",
-        components: () => import("@/views/teacher/TestQuestions.vue")
+        component: () => import("@/views/teacher/TestQuestions.vue")
       },
       {
-        path: "/teacher/courses/:cid",
+        path: "/teacher/course/:cid",
         props: true,
         component: () => import("@/views/teacher/Course.vue")
       },
@@ -118,7 +132,7 @@ let studentRouts = [
         component: () => import("@/views/student/TestList.vue")
       },
       {
-        path: "/student/course/:cid/tests/:hid/test",
+        path: "/student/course/:cid/tests/:tid/test",
         props: true,
         component: () => import("@/views/student/TestQuestion.vue")
       },
